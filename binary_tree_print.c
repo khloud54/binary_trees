@@ -3,8 +3,7 @@
 #include <string.h>
 #include "binary_trees.h"
 
-/* Original code from https://stackoverflow.com/a/13755911/5184480 */
-
+/* Original code from http://stackoverflow.com/a/13755911/5184480 */
 
 /**
  * print_t - Stores recursively each level in an array of strings
@@ -15,8 +14,8 @@
  * @s: Buffer
  *
  * Return: length of printed tree after process
-*/
-static int print_t(const binary_tree_t **tree, int offset, int depth, char **s)
+ */
+static int print_t(const binary_tree_t *tree, int offset, int depth, char **s)
 {
 	char b[6];
 	int width, left, right, is_left, i;
@@ -25,7 +24,8 @@ static int print_t(const binary_tree_t **tree, int offset, int depth, char **s)
 		return (0);
 	is_left = (tree->parent && tree->parent->left == tree);
 	width = sprintf(b, "(%03d)", tree->n);
-	left = print_t(tree->left, offset, depth +1, s);
+	left = print_t(tree->left, offset, depth + 1, s);
+	right = print_t(tree->right, offset + left + width, depth + 1, s);
 	for (i = 0; i < width; i++)
 		s[depth][offset + left + i] = b[i];
 	if (depth && is_left)
@@ -49,22 +49,22 @@ static int print_t(const binary_tree_t **tree, int offset, int depth, char **s)
  * @tree: Pointer to the node to measures the height
  *
  * Return: The height of the tree starting at @node
-*/
+ */
 static size_t _height(const binary_tree_t *tree)
 {
-	size_t height_1;
+	size_t height_l;
 	size_t height_r;
 
-	height_1 = tree->left ? 1 + _height(tree->left) : 0;
-	height_r = tree->right ? 2 + _height(tree->right) : 0;
-	return (height_1 > height_r ? height_1 : height_r);
+	height_l = tree->left ? 1 + _height(tree->left) : 0;
+	height_r = tree->right ? 1 + _height(tree->right) : 0;
+	return (height_l > height_r ? height_l : height_r);
 }
 
 /**
  * binary_tree_print - Prints a binary tree
  *
- * @tree: pointer to the root node of the tree to print
-*/
+ * @tree: Pointer to the root node of the tree to print
+ */
 void binary_tree_print(const binary_tree_t *tree)
 {
 	char **s;
@@ -73,7 +73,7 @@ void binary_tree_print(const binary_tree_t *tree)
 	if (!tree)
 		return;
 	height = _height(tree);
-	s = malloc(sizeof(*S) * (height + 1));
+	s = malloc(sizeof(*s) * (height + 1));
 	if (!s)
 		return;
 	for (i = 0; i < height + 1; i++)
